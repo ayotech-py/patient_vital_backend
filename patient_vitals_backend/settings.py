@@ -154,7 +154,7 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_BEAT_SCHEDULE = {
     'aggregate-vitals-every-5-minutes': {
         'task': 'patient_vitals_api.tasks.aggregate_vitals',
-        'schedule': 20.0,
+        'schedule': 300.0,
     },
 }
 
