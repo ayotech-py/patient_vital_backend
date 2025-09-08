@@ -49,7 +49,7 @@ CORS_ALLOW_HEADERS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'https://adhere-vercel.vercel.app',
+    'https://patient-vital-dashboard.vercel.app/',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
