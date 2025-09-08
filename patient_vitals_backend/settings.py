@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+from urllib.parse import urlparse
 
 # Load .env file
 load_dotenv()
@@ -113,11 +114,19 @@ DATABASES = {
 # settings.py
 ASGI_APPLICATION = "patient_vitals_backend.asgi.application"
 
+redis_url = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
+parsed_url = urlparse(redis_url)
+hosts = [{
+    'host': parsed_url.hostname,
+    'port': parsed_url.port,
+    'password': parsed_url.password,
+}]
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [[os.environ.get('REDIS_URL', 'redis://localhost:6379/0')]],  # or use your WSL2 IP
+            "hosts": hosts
         },
     },
 }
