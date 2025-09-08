@@ -51,6 +51,10 @@ CORS_ALLOWED_ORIGINS = [
     'https://adhere-vercel.vercel.app/',
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://patientvitalbackend-production.up.railway.app",
+]
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
