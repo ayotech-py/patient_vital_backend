@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+# Load .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,11 +30,28 @@ SECRET_KEY = 'django-insecure-r3smc%@=8l*k1@3341j_f$hpcvg3e_abt=r74dzn63-cu+m&7g
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+    "Access-Control-Allow-Origin",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'https://adhere-vercel.vercel.app/',
+]
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,6 +63,7 @@ INSTALLED_APPS = [
     'patient_vitals_api',
     'channels',
     'rest_framework',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -90,7 +113,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("localhost", 6379)],  # or use your WSL2 IP
+            "hosts": [[os.environ.get('REDIS_URL', 'redis://localhost:6379/0')]],  # or use your WSL2 IP
         },
     },
 }
@@ -107,7 +130,7 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_BEAT_SCHEDULE = {
     'aggregate-vitals-every-5-minutes': {
         'task': 'patient_vitals_api.tasks.aggregate_vitals',
-        'schedule': 60.0,
+        'schedule': 20.0,
     },
 }
 
@@ -140,6 +163,9 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+# Now env vars are available
+api_key = os.getenv("OPENAI_API_KEY")
 
 
 # Static files (CSS, JavaScript, Images)
